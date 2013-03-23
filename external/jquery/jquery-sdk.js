@@ -94,6 +94,11 @@
 
 					return module;
 				};
+				
+			// NEW 6.15.1: Lower case structure
+			if (type === "plugin" && name && name.toLowerCase) {
+				name = name.toLowerCase();
+			} 
 
 			// May not have dependencies
 			if (!callback) {
@@ -111,6 +116,11 @@
 				dependType = dependMap[dependType];
 
 				$.each($.isArray(dependTypeDepends) ? dependTypeDepends : [dependTypeDepends], function (i, depend) {
+					// NEW 6.15.1: Lower case structure
+					if (dependType === "" && depend) {
+						depend = depend.toLowerCase();
+					}
+				
 					requireDepends.push(dependType + pluginToModule(depend));
 				});
 			});
@@ -380,6 +390,13 @@
 
 			return $;
 		});
+		
+		// NEW 6.15.1: Lower case structure
+		if (moduleId !== moduleId.toLowerCase()) {
+			define(moduleId.toLowerCase(), [moduleId], function ($) {
+				return $
+			});
+		}
 	});
 
 }(jQuery));
